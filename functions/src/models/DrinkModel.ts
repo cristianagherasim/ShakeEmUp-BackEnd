@@ -1,55 +1,65 @@
-export default interface DrinkModel {
-   strDrink: string,
-   strGlass: string,
-   strTags: string,
-   strVideo: string,
-   strIBA: string, 
-   strDrinkThumb: string,
-   strIngredient1: string,
-   strIngredient2: string,
-   strIngredient3: string,
-   strIngredient4: string,
-   strIngredient5: string,
-   strIngredient6: string,
-   strIngredient7: string,
-   strIngredient8: string,
-   strIngredient9: string,
-   strIngredient10: string,
-   strIngredient11: string,
-   strIngredient12: string,
-   strIngredient13: string,
-   strIngredient14: string,
-   strIngredient15: string,
-   volume1: number,
-   volume2: number,
-   volume3: number,
-   volume4: number,
-   volume5: number,
-   volume6: number,
-   volume7: number,
-   volume8: number,
-   volume9: number,
-   volume10: number,
-   volume11: number,
-   volume12: number,
-   volume13: number,
-   volume14: number,
-   volume15: number,
-   strMeasure1: string,
-   strMeasure2: string, 
-   strMeasure3: string, 
-   strMeasure4: string, 
-   strMeasure5: string, 
-   strMeasure6: string, 
-   strMeasure7: string, 
-   strMeasure8: string, 
-   strMeasure9: string, 
-   strMeasure10: string, 
-   strMeasure11: string, 
-   strMeasure12: string, 
-   strMeasure13: string, 
-   strMeasure14: string, 
-   strMeasure15: string, 
-   strInstructions: string,
-   addtionalInfo: string
-}
+// After making an API call in Postman, you can copy the code and using 
+// CTRL+Shift+P here in VS Code use 'Paste as JSON' to help create the model
+
+// Notice that there are up to 15 ingredients and measures per drink, though not all
+// cocktails will use that many so we will have to account for that in the Details page
+
+// Their JSON code is setup so the base level is Root and then contains Drink[]
+// In some places this requires using Root (not an array) and others Drink[] (an array)
+
+export interface Root {
+   drinks: Drink[]
+ }
+ export interface Drink {
+   idDrink: string
+   strDrink: string
+   strDrinkAlternate: any
+   strTags: any
+   strVideo: any
+   strCategory: string
+   strIBA: any
+   strAlcoholic: string
+   strGlass: string
+   strInstructions: string
+   strInstructionsES: any
+   strInstructionsDE: string
+   strInstructionsFR: any
+   strInstructionsIT: string
+   "strInstructionsZH-HANS": any
+   "strInstructionsZH-HANT": any
+   strDrinkThumb: string
+   strIngredient1: string
+   strIngredient2: string
+   strIngredient3: string
+   strIngredient4: string
+   strIngredient5: any
+   strIngredient6: any
+   strIngredient7: any
+   strIngredient8: any
+   strIngredient9: any
+   strIngredient10: any
+   strIngredient11: any
+   strIngredient12: any
+   strIngredient13: any
+   strIngredient14: any
+   strIngredient15: any
+   strMeasure1: string
+   strMeasure2: string
+   strMeasure3: string
+   strMeasure4: string
+   strMeasure5: string
+   strMeasure6: string
+   strMeasure7: string
+   strMeasure8: any
+   strMeasure9: any
+   strMeasure10: any
+   strMeasure11: any
+   strMeasure12: any
+   strMeasure13: any
+   strMeasure14: any
+   strMeasure15: any
+   strImageSource: string
+   strImageAttribution: any
+   strCreativeCommonsConfirmed: string
+   dateModified: any
+ }
