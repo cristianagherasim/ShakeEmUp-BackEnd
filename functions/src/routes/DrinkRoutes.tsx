@@ -2,11 +2,11 @@ import express, {Request, Response} from "express";
 import {getClient} from "../routes/db";
 import {ObjectId} from "mongodb";
 
-import DrinkModel from "../models/DrinkModel";
+import {Drink} from "../models/DrinkModel";
 
-export const shoutOutRoutes = express.Router();
+export const cocktailRoutes = express.Router();
 
-shoutOutRoutes.get("/", async (req:Request, res:Response) => {
+cocktailRoutes.get("/", async (req:Request, res:Response) => {
     const to = req.query.to as string;
   
     const mongoQuery: any = {};
@@ -17,7 +17,7 @@ shoutOutRoutes.get("/", async (req:Request, res:Response) => {
   
     try {
       const client = await getClient();
-      const results = await client.db().collection<DrinkModel>("drink").find(mongoQuery).toArray();
+      const results = await client.db().collection<Drink>("drink").find(mongoQuery).toArray();
   
       return res.status(200).json(results);
     } catch (error) {
@@ -25,11 +25,11 @@ shoutOutRoutes.get("/", async (req:Request, res:Response) => {
     }
   });
 
-  shoutOutRoutes.get("/", async (req:Request, res:Response) => {
+  cocktailRoutes.get("/", async (req:Request, res:Response) => {
     const id = req.params.id;
     try {
       const client = await getClient();
-      const result = await client.db().collection<DrinkModel>("drink").findOne({_id: new ObjectId(id)});
+      const result = await client.db("DrinkCollection").collection<Drink>("drink").findOne({_id: new ObjectId(id)});
   
       if (!result) {
         return res.status(404).send("Drink not found");
@@ -41,28 +41,38 @@ shoutOutRoutes.get("/", async (req:Request, res:Response) => {
     }
   });
 
-  shoutOutRoutes.post("/", async (req:Request, res:Response) => {
-    const shoutOut = req.body as DrinkModel;
+  cocktailRoutes.post("/favorites", async (req:Request, res:Response) => {
+    const id = req.params.id;
+   
+    const newDrink = {
+      newDrinkId: id,
+      strDrink: req.body.strDrink,
+      strGlass: req.body.strGlass,
+      strIngredient1: req.body.strIngredient,
+      strMeasure1: req.body.strMeasure,
+      strInstructions: req.body.strInstructions,
+      strImageSource: req.body.strImageSource,
+    } as unknown as Drink;
   
     try {
       const client = await getClient();
   
-      await client.db().collection<DrinkModel>("drinks").insertOne(shoutOut);
+      await client.db("UserSubmittedDrinks").collection<Drink>("favorites").insertOne(newDrink);
   
-      return res.status(201).json(shoutOut);
+      return res.status(201).json(newDrink);
     } catch (error) {
       return res.status(500).send(error);
     }
   });
 
-  shoutOutRoutes.put("/", async (req:Request, res:Response) => {
+  cocktailRoutes.put("/", async (req:Request, res:Response) => {
     const id = req.params.id;
-    const cockTail = req.body as DrinkModel;
+    const cockTail = req.body as Drink;
    
   
     try {
       const client = await getClient();
-      const result = await client.db().collection<DrinkModel>("drinks").replaceOne({strDrink: new String(id)}, cockTail);
+      const result = await client.db().collection<Drink>("drinks").replaceOne({strDrink: new String(id)}, cockTail);
   
       if (result.modifiedCount === 0) {
         return res.status(404).send("Not found");
@@ -75,11 +85,11 @@ shoutOutRoutes.get("/", async (req:Request, res:Response) => {
     }
   });
 
-  shoutOutRoutes.delete("/", async (req:Request, res:Response) => {
+  cocktailRoutes.delete("/", async (req:Request, res:Response) => {
     const id = req.params.id;
     try {
       const client = await getClient();
-      const result = await client.db().collection<DrinkModel>("drinks").deleteOne({strDrink: new String(id)});
+      const result = await client.db().collection<Drink>("drinks").deleteOne({strDrink: new String(id)});
       if (result.deletedCount === 0) {
         return res.status(404).json({message: "Not Found"});
       } else {
