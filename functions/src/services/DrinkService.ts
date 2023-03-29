@@ -1,22 +1,22 @@
-import DrinkModel from "../models/DrinkModel";
+import {Drink} from "../models/DrinkModel";
 import axios from "axios"
 
-const baseUrl = "www.thecocktaildb.com/api/json/v1/1/"
+const baseUrl = "https://us-central1-shakeemup-c22e5.cloudfunctions.net/api"
 
-export function fetchDrink():Promise<DrinkModel[]> {
-    return axios.get<DrinkModel[]>(`${baseUrl}/newfavorite`)
+export function fetchDrink():Promise<Drink[]> {
+    return axios.get<Drink[]>(`${baseUrl}/`)
     .then(res => res.data)
 }
 
-export function addDrink(DrinkModel:DrinkModel):Promise<DrinkModel> {
-    //might need to come back and put something after the "/" like on line 7 
-    return axios.post<DrinkModel>(`${baseUrl}/`, DrinkModel)
+export function addDrink(DrinkModel:Drink):Promise<Drink> {
+   
+    return axios.post<Drink>(`${baseUrl}/favorites`, DrinkModel)
     .then(res => res.data);
   }
   
-  export function fetchDrinkTo(user: string):Promise<DrinkModel[]> {
-    //might need to come back and put something after the "/" like on line 7 
-    return axios.get<DrinkModel[]>(`${baseUrl}/`, {
+  export function fetchDrinkTo(user: string):Promise<Drink[]> {
+    
+    return axios.get<Drink[]>(`${baseUrl}/`, {
       params: { to: user }
     })
     .then(res => res.data)
