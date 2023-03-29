@@ -9,13 +9,13 @@ export function fetchDrink():Promise<Drink[]> {
 }
 
 export function addDrink(DrinkModel:Drink):Promise<Drink> {
-    //might need to come back and put something after the "/" like on line 7 
+   
     return axios.post<Drink>(`${baseUrl}/favorites`, DrinkModel)
     .then(res => res.data);
   }
   
   export function fetchDrinkTo(user: string):Promise<Drink[]> {
-    //might need to come back and put something after the "/" like on line 7 
+    
     return axios.get<Drink[]>(`${baseUrl}/`, {
       params: { to: user }
     })
