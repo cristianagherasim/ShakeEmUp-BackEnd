@@ -1,23 +1,17 @@
 import express, {Request, Response} from "express";
-import {getClient} from "../routes/db";
+import {getClient} from "./db";
 import {ObjectId} from "mongodb";
 
-import {Drink} from "../models/DrinkModel";
+import {UserDrink} from "../models/UserDrinkModel";
 
 export const cocktailRoutes = express.Router();
 
 cocktailRoutes.get("/", async (req:Request, res:Response) => {
-    const to = req.query.to as string;
-  
-    const mongoQuery: any = {};
-    // if a to was specified, add it to the mongo query
-    if (to) {
-      mongoQuery.to = to; // { to: "Grant" }
-    }
+    
   
     try {
       const client = await getClient();
-      const results = await client.db().collection<Drink>("drink").find(mongoQuery).toArray();
+      const results = await client.db("UserSubmittedDrinks").collection<UserDrink>("userDrinks").find({}).toArray();
   
       return res.status(200).json(results);
     } catch (error) {
@@ -25,11 +19,11 @@ cocktailRoutes.get("/", async (req:Request, res:Response) => {
     }
   });
 
-  cocktailRoutes.get("/", async (req:Request, res:Response) => {
+  cocktailRoutes.get("/:id", async (req:Request, res:Response) => {
     const id = req.params.id;
     try {
       const client = await getClient();
-      const result = await client.db("DrinkCollection").collection<Drink>("drink").findOne({_id: new ObjectId(id)});
+      const result = await client.db("UserSubmittedDrinks").collection<UserDrink>("userDrinks").findOne({_id: new ObjectId(id)});
   
       if (!result) {
         return res.status(404).send("Drink not found");
@@ -41,7 +35,7 @@ cocktailRoutes.get("/", async (req:Request, res:Response) => {
     }
   });
 
-  cocktailRoutes.post("/favorites", async (req:Request, res:Response) => {
+  cocktailRoutes.post("/", async (req:Request, res:Response) => {
     const id = req.params.id;
    
     const newDrink = {
@@ -52,27 +46,27 @@ cocktailRoutes.get("/", async (req:Request, res:Response) => {
       strMeasure1: req.body.strMeasure,
       strInstructions: req.body.strInstructions,
       strImageSource: req.body.strImageSource,
-    } as unknown as Drink;
+    } as unknown as UserDrink;
   
     try {
       const client = await getClient();
   
-      await client.db("UserSubmittedDrinks").collection<Drink>("favorites").insertOne(newDrink);
+      await client.db("UserSubmittedDrinks").collection<UserDrink>("userDrinks").insertOne(newDrink);
   
       return res.status(201).json(newDrink);
     } catch (error) {
       return res.status(500).send(error);
     }
   });
-
-  cocktailRoutes.put("/", async (req:Request, res:Response) => {
+  //put is update something that already exists
+  cocktailRoutes.put("/:id", async (req:Request, res:Response) => {
     const id = req.params.id;
-    const cockTail = req.body as Drink;
+    const cockTail = req.body as UserDrink;
    
   
     try {
       const client = await getClient();
-      const result = await client.db().collection<Drink>("drinks").replaceOne({strDrink: new String(id)}, cockTail);
+      const result = await client.db("UserSubmittedDrinks").collection<UserDrink>("userDrinks").replaceOne({_id: new ObjectId(id)}, cockTail);
   
       if (result.modifiedCount === 0) {
         return res.status(404).send("Not found");
@@ -85,11 +79,11 @@ cocktailRoutes.get("/", async (req:Request, res:Response) => {
     }
   });
 
-  cocktailRoutes.delete("/", async (req:Request, res:Response) => {
+  cocktailRoutes.delete("/:id", async (req:Request, res:Response) => {
     const id = req.params.id;
     try {
       const client = await getClient();
-      const result = await client.db().collection<Drink>("drinks").deleteOne({strDrink: new String(id)});
+      const result = await client.db("UserSubmittedDrinks").collection<UserDrink>("userDrinks").deleteOne({_id: new ObjectId(id)});
       if (result.deletedCount === 0) {
         return res.status(404).json({message: "Not Found"});
       } else {
