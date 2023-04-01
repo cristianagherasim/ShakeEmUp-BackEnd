@@ -58,6 +58,7 @@ cocktailRoutes.get("/", async (req:Request, res:Response) => {
       return res.status(500).send(error);
     }
   });
+  
   //put is update something that already exists
   cocktailRoutes.put("/:id", async (req:Request, res:Response) => {
     const id = req.params.id;
