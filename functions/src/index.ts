@@ -5,6 +5,7 @@ import cors from "cors";
 import { cocktailRoutes } from "./routes/UserSubmittedDrinkRoutes";
 
 
+
 const app:Application = express();
 app.use(cors());
 app.use(express.json());

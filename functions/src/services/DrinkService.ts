@@ -12,7 +12,7 @@ export function addDrink(DrinkModel:Drink):Promise<Drink> {
    
     return axios.post<Drink>(`${baseUrl}/favorites`, DrinkModel)
     .then(res => res.data);
-  }
+}
   
   export function fetchDrinkTo(user: string):Promise<Drink[]> {
     
@@ -20,4 +20,4 @@ export function addDrink(DrinkModel:Drink):Promise<Drink> {
       params: { to: user }
     })
     .then(res => res.data)
-  }
+}
