@@ -3,6 +3,8 @@ import axios from "axios"
 
 const baseUrl = "https://us-central1-shakeemup-c22e5.cloudfunctions.net/api"
 
+//Get and post HTTPS methods used here 
+
 export function fetchDrink():Promise<Drink[]> {
     return axios.get<Drink[]>(`${baseUrl}/`)
     .then(res => res.data)

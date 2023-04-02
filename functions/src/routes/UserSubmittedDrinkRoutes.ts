@@ -4,7 +4,11 @@ import {ObjectId} from "mongodb";
 
 import {UserDrink} from "../models/UserDrinkModel";
 
+//express router is here 
+
 export const cocktailRoutes = express.Router();
+
+//.get = get info, .post = update info,  .delete = delete info
 
 cocktailRoutes.get("/", async (req:Request, res:Response) => {
     
