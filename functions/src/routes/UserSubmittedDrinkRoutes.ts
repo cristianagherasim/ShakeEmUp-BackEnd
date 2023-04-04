@@ -98,16 +98,8 @@ cocktailRoutes.get("/", async (req:Request, res:Response) => {
       strImageSource: req.body.strImageSource,
       strImageAttribution: req.body.strImageAttribution,
       strCreativeCommonsConfirmed: req.body.strCreativeCommonsConfirmed,
-      dateModified: req.body.dateModified
-
-
-
-
-
-
-
-
-
+      dateModified: req.body.dateModified,
+      isUserGen: true,
     } as unknown as Drink;
   
     try {
